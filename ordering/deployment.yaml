@@ -3,7 +3,7 @@ kind: Rollout
 metadata:
   name: pizza-ordering-deployment
 spec:
-  replicas: 3
+  replicas: 4
   selector:
     matchLabels:
       app: pizza-ordering
@@ -13,11 +13,16 @@ spec:
       maxSurge: "25%"
       maxUnavailable: 0
       steps:
-      - setWeight: 10
+      - setWeight: 25
       - pause:
-          duration: 1m # 1 hour
-      - setWeight: 20
-      - pause: {} # pause indefinitely
+          duration: 1m
+      - setWeight: 50
+      - pause:
+          duration: 1m
+      - setWeight: 75
+      - pause:
+          duration: 1m
+      - setWeight: 100
   template:
     metadata:
       labels:
