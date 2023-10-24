@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: pizza-ordering-service
 spec:
+  type: NodePort
   ports:
     - protocol: TCP
       port: 80
