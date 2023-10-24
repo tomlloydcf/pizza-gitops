@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
       - name: pizza-ordering
-        image: pizza-ordering:0.0.3
+        image: pizza-ordering:0.0.4
         volumeMounts:
           - name: html
             mountPath: /var/www/html
