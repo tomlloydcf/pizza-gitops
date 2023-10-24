@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pizza-ordering-deployment
-  labels:
-    app: pizza-ordering
 spec:
   replicas: 3
   selector:
