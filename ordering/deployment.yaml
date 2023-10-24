@@ -1,15 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pizza-ordering
-  labels:
-    app: pizza-ordering
+  name: pizza-ordering-deployment
 spec:
   replicas: 3
   selector:
     matchLabels:
       app: pizza-ordering
   template:
+    metadata:
+      labels:
+        app: pizza-ordering
     spec:
       containers:
       - name: pizza-ordering
