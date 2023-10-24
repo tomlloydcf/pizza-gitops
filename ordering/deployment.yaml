@@ -1,32 +1,47 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pizza-ordering-deployment-app
+  name: pizza-ordering-deployment
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: pizza-ordering-app
+      app: pizza-ordering
   template:
     metadata:
       labels:
-        app: pizza-ordering-app
+        app: pizza-ordering
     spec:
       containers:
-      - name: pizza-ordering-app
+      - name: pizza-ordering
         image: pizza-ordering:0.0.2
+        volumeMounts:
+          - name: html
+            mountPath: /var/www/html
         ports:
         - containerPort: 9000
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: pizza-ordering-service-app
-spec:
-  selector:
-    app: pizza-ordering-app
-  type: NodePort
-  ports:
-  - protocol: TCP
-    port: 9000
-    targetPort: 9000
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/bash", "-c", "cp -r /var/www/public/* /var/www/html"]
+      - name: nginx
+        image: nginx
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 80
+        volumeMounts:
+          - name: nginx-config
+            mountPath: /etc/nginx/conf.d
+          - name: html
+            mountPath: /var/www/html
+            readOnly: true
+      
+      volumes:
+      - name: html
+        emptyDir: {}
+      - name: nginx-config
+        configMap:
+          name: nginx-config
+          items:
+            - key: config
+              path: default.conf
