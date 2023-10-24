@@ -17,3 +17,19 @@ spec:
         image: pizza-ordering:0.0.2
         ports:
         - containerPort: 9000
+      - name: nginx
+        image: nginx
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 80
+        volumeMounts:
+          - name: nginx-config
+            mountPath: /etc/nginx/conf.d
+      
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx-config
+          items:
+            - key: config
+              path: default.conf
